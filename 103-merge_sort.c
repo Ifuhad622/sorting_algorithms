@@ -7,7 +7,7 @@
  * @array: The array to sort.
  * @size: The size of the array.
  * Return: Nothing.
- **/
+ */
 void merge_sort(int *array, size_t size)
 {
 	size_t i = 0;
@@ -58,8 +58,8 @@ void merge(size_t lo, size_t mi, size_t hi, int *dest, int *src)
 				j++;
 			}
 		}
-		printf("[Done]: ");
-		print_array(dest + lo, hi - lo);
+	printf("[Done]: ");
+	print_array(dest + lo, hi - lo);
 }
 
 /**
@@ -69,7 +69,7 @@ void merge(size_t lo, size_t mi, size_t hi, int *dest, int *src)
  * @array: The array to sort.
  * @base: The copy of the array.
  * Return: Nothing.
- **/
+ */
 void merge_partition(size_t lo, size_t hi, int *array, int *base)
 {
 	size_t mi = 0;
