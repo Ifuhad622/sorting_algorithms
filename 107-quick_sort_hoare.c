@@ -1,91 +1,76 @@
 #include "sort.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
- * swap_integers - Func swaps two integers in an array.
- * @a: The first integer.
- * @b: The second integer.
+ * partition - finds the partition for the quicksort using the Hoare scheme
+ * @array: array to sort
+ * @lo: lowest index of the partition to sort
+ * @hi: highest index of the partition to sort
+ * @size: size of the array
+ *
+ * Return: index of the partition
  */
-void swap_integers(int *a, int *b)
+size_t partition(int *array, ssize_t lo, ssize_t hi, size_t size)
 {
-        int temp;
+	int swap, pivot;
 
-        temp = *a;
-        *a = *b;
-        *b = temp;
+	pivot = array[hi];
+	while (lo <= hi)
+	{
+		while (array[lo] < pivot)
+			lo++;
+		while (array[hi] > pivot)
+			hi--;
+		if (lo <= hi)
+		{
+			if (lo != hi)
+			{
+				swap = array[lo];
+				array[lo] = array[hi];
+				array[hi] = swap;
+				print_array(array, size);
+			}
+			lo++;
+			hi--;
+		}
+	}
+	return (hi);
 }
 
 /**
- * hoare_partition - Func uses hoare partition scheme to order
- *                    a subset of an array of integers.
- * @array: Input array of integers.
- * @size: Size of array.
- * @left: Starting index of subset to order.
- * @right: Ending index of subset to order.
+ * quicksort - sorts a partition of an array of integers
+ * @array: array to sort
+ * @lo: lowest index of the partition to sort
+ * @hi: highest index of the partition to sort
+ * @size: size of the array
  *
- * Return: Final partition index.
- *
- * Description: Uses the last element of the partition as the pivot.
- * Prints the array after each swap of two elements.
+ * Return: void
  */
-int hoare_partition(int *array, size_t size, int left, int right)
+void quicksort(int *array, ssize_t lo, ssize_t hi, size_t size)
 {
-        int pivot, above, below;
+	ssize_t pivot;
 
-        pivot = array[right];
-        for (above = left - 1, below = right + 1; above < below;)
-        {
-                do {
-                        above++;
-                } while (array[above] < pivot);
-                do {
-                        below--;
-                } while (array[below] > pivot);
+	if (lo < hi)
+	{
+		pivot = partition(array, lo, hi, size);
+		quicksort(array, lo, pivot, size);
+		quicksort(array, pivot + 1, hi, size);
 
-                if (above < below)
-                {
-                        swap_integers(array + above, array + below);
-                        print_array(array, size);
-                }
-        }
-
-        return (above);
+	}
 }
 
 /**
- * hoare_sort - Func uses quicksort algorithm recursively.
- * @array: Input array of integers.
- * @size: Size of array.
- * @left: Starting index of array partition.
- * @right: Ending index of array partition to order.
+ * quick_sort_hoare - sorts an array of integers in ascending order using the
+ * Quick sort algorithm
+ * @array: The array to sort
+ * @size: The size of the array
  *
- * Description: Uses the Hoare partition scheme.
- */
-void hoare_sort(int *array, size_t size, int left, int right)
-{
-        int part;
-
-        if (right - left > 0)
-        {
-                part = hoare_partition(array, size, left, right);
-                hoare_sort(array, size, left, part - 1);
-                hoare_sort(array, size, part, right);
-        }
-}
-
-/**
- * quick_sort_hoare - Func sorts array of integers in ascending
- *                    order using Hoare partition.
- * @array: Input array of integers.
- * @size: Size of array.
- *
- * Description: Prints array after each swap of two elements.
+ * Return: void
  */
 void quick_sort_hoare(int *array, size_t size)
 {
-        if (array == NULL || size < 2)
-        {
-                return;
-        }
-
-        hoare_sort(array, size, 0, size - 1);
+	if (array == NULL || size < 2)
+		return;
+	quicksort(array, 0, size - 1, size);
 }
